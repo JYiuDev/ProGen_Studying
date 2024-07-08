@@ -1,1 +1,4 @@
+res://RandomWalk.gd
 res://RandomWalkTest.tscn
+res://Script/RandomWalk.gd
+res://Script/World.gd
