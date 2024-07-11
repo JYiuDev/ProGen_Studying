@@ -8,7 +8,7 @@ var direction: Vector2 = Vector2.RIGHT
 var borders:Rect2 = Rect2()
 var path: Array = []
 var step_since_turn: int = 0
-@export var max_straight: int = 5
+var max_straight: int = 6
 
 
 func _init(start_position: Vector2, new_borders: Rect2):
@@ -28,19 +28,21 @@ func step() -> bool:	#Try step in the current direction, return true if able and
 	else:
 		return false
 
-func walk(walk_length: int):
+func walk(walk_length: int) -> Array:
 	for i in walk_length:
 		if randf() <= 1/max_straight or step_since_turn >= max_straight:
 			change_direction()
-		
 		if step():
 			path.append(position)
 		else:
 			change_direction()
+	return path
 
 func change_direction():
 	var directions:Array = DIRECTIONS.duplicate()
 	directions.erase(direction)
+	directions.shuffle()
 	var try_dir = directions.pop_front()
 	while !borders.has_point(position + try_dir):
 		try_dir = directions.pop_front()
+	direction = try_dir
