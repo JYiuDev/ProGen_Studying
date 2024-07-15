@@ -1,10 +1,10 @@
 [gd_scene load_steps=5 format=3 uid="uid://c5e854m7gddwh"]
 
-[ext_resource type="Script" path="res://Script/World.gd" id="1_afghw"]
-[ext_resource type="Texture2D" uid="uid://bfk4b5u5xccun" path="res://Images/RandomLevelGenTileset.png" id="1_i1vn4"]
+[ext_resource type="Script" path="res://2D_topdown_walkerDungeon/Script/World.gd" id="1_hqn6h"]
+[ext_resource type="Texture2D" uid="uid://bfk4b5u5xccun" path="res://2D_topdown_walkerDungeon/Images/RandomLevelGenTileset.png" id="2_438m8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7tgqk"]
-texture = ExtResource("1_i1vn4")
+texture = ExtResource("2_438m8")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/terrain_set = 0
@@ -343,8 +343,8 @@ terrain_set_0/terrain_0/name = "DungeonProtoTiles"
 terrain_set_0/terrain_0/color = Color(0.843137, 0.117647, 0, 1)
 sources/0 = SubResource("TileSetAtlasSource_7tgqk")
 
-[node name="World" type="Node2D"]
-script = ExtResource("1_afghw")
+[node name="walker_dungeon_world" type="Node2D"]
+script = ExtResource("1_hqn6h")
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_n8hrr")

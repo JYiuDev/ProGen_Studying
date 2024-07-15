@@ -11,7 +11,7 @@ func _ready():
 
 func generate_world():
 	var walker = Walker.new(Vector2(19, 11), borders)
-	var map = walker.walk(700)
+	var map = walker.walk(300)
 	walker.queue_free()
 	for cell in map:
 		tileMap.erase_cell(0, cell)
