@@ -1,6 +1,3 @@
-res://RandomWalkTest.tscn
-res://Script/World.gd
-res://2dTopDown_walker_dungeon/Script/RandomWalkTest.tscn
-res://2D_TopDown_walker_dungeon/Script/RandomWalkTest.tscn
-res://2D_topdown_walkerDungeon/Script/RandomWalkTest.tscn
 res://recursive_backtrack_world.tscn
+res://2D_topdown_recursivsBacktrackMaze/Scripts/recurbacktrack_generation.gd
+res://2D_topdown_walkerDungeon/Script/RandomWalkTest.tscn
