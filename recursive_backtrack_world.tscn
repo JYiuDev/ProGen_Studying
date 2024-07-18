@@ -48,3 +48,7 @@ script = ExtResource("1_x5nl5")
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_lrhjw")
 format = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(7.995, 7.995)
