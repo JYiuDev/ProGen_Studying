@@ -8,11 +8,13 @@ const W = 8
 
 var map_seed:int = 0
 
-var wall_directions:Dictionary = {Vector2.UP: N, Vector2.RIGHT: E, Vector2.DOWN: S, Vector2.LEFT: W}
+var wall_directions: Dictionary
+var wall_directions_uniform: Dictionary = {Vector2.UP: N, Vector2.RIGHT: E, Vector2.DOWN: S, Vector2.LEFT: W}
 var tile_size: int = 16
 var width: int = 18
 var height: int = 10
 var unvisited: Array
+var visited: Array
 
 #Tileset properties
 var tileset_collumns: int = 4
@@ -21,11 +23,22 @@ var tileset_rows:     int = 4
 #Random elements
 var random_remove_factor:float = 0.2
 
+#Step property?
+var step_size: int = 2
+
 @onready var tilemap:TileMap = $TileMap
 
 func _ready():
-	new_map_seed()
-	create_maze()
+	if step_size == 1:
+		wall_directions = wall_directions_uniform
+		new_map_seed()
+		create_maze()
+	else:
+		for key: Vector2 in wall_directions_uniform:
+			wall_directions[key * step_size] = wall_directions_uniform[key]
+		new_map_seed()
+		create_maze()
+		
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
@@ -49,8 +62,11 @@ func create_maze():
 		for y in range(height):
 			#register tiles
 			var cell: Vector2 = Vector2(x,y)
-			unvisited.append(cell)
 			tilemap.set_cell(0, cell, 0, int_to_atlas(N|E|S|W))
+			
+	for x in range(0, width, step_size):
+		for y in range(0, height, step_size):
+			unvisited.append(Vector2(x, y))
 			
 			#print(atlas_to_int(tilemap.get_cell_atlas_coords(0, cell)) - wall_directions[Vector2.UP])
 	
@@ -71,7 +87,7 @@ func create_maze():
 		else:
 			current_cell = stack.pop_back()
 	
-	random_remove_walls()
+	#random_remove_walls()
 
 
 func remove_walls(a_cell: Vector2, b_cell: Vector2):
@@ -80,6 +96,18 @@ func remove_walls(a_cell: Vector2, b_cell: Vector2):
 	tilemap.set_cell(0, a_cell, 0, tilemap.get_cell_atlas_coords(0, a_cell) - a_to_b)
 	tilemap.set_cell(0, b_cell, 0, tilemap.get_cell_atlas_coords(0, b_cell) - b_to_a)
 
+	if step_size > 1:
+		#fill in horizontal or vertical cell when step size is bigger than 1
+		var dir:Vector2 = (b_cell - a_cell).normalized()
+		var cur_cell: Vector2 = a_cell
+		
+		for i in step_size - 1:
+			cur_cell = cur_cell + dir
+			if dir.x != 0:
+				tilemap.set_cell(0, cur_cell, 0, int_to_atlas(S|N))
+			else:
+				tilemap.set_cell(0, cur_cell, 0, int_to_atlas(E|W))
+			
 func random_remove_walls():
 	#go through the tiles and remove tiles at random
 	for i in range(int(width * height * random_remove_factor)):
