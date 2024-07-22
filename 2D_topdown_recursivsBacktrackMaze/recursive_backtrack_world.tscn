@@ -1,10 +1,10 @@
 [gd_scene load_steps=5 format=3 uid="uid://bq7117bbk0g6i"]
 
-[ext_resource type="Texture2D" uid="uid://dnmlyxp8vecug" path="res://Assets/Tilemap/maze_tiles.png" id="1_wijww"]
-[ext_resource type="Script" path="res://2D_topdown_recursivsBacktrackMaze/Scripts/recurbacktrack_generation.gd" id="1_x5nl5"]
+[ext_resource type="Script" path="res://2D_topdown_recursivsBacktrackMaze/Scripts/recurbacktrack_generation.gd" id="1_8fpr6"]
+[ext_resource type="Texture2D" uid="uid://dnmlyxp8vecug" path="res://Assets/Tilemap/maze_tiles.png" id="2_xakis"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w61uv"]
-texture = ExtResource("1_wijww")
+texture = ExtResource("2_xakis")
 1:0/0 = 0
 1:0/0/custom_data_0 = 1
 2:0/0 = 0
@@ -43,7 +43,7 @@ custom_data_layer_0/type = 2
 sources/0 = SubResource("TileSetAtlasSource_w61uv")
 
 [node name="World" type="Node2D"]
-script = ExtResource("1_x5nl5")
+script = ExtResource("1_8fpr6")
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_lrhjw")

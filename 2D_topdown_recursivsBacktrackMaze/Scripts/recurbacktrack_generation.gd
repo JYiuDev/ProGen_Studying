@@ -6,6 +6,8 @@ const E = 2
 const S = 4
 const W = 8
 
+var map_seed:int = 0
+
 var wall_directions:Dictionary = {Vector2.UP: N, Vector2.RIGHT: E, Vector2.DOWN: S, Vector2.LEFT: W}
 var tile_size: int = 16
 var width: int = 18
@@ -16,15 +18,18 @@ var unvisited: Array
 var tileset_collumns: int = 4
 var tileset_rows:     int = 4
 
+#Random elements
+var random_remove_factor:float = 0.2
+
 @onready var tilemap:TileMap = $TileMap
 
 func _ready():
-	randomize()
+	new_map_seed()
 	create_maze()
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
-		randomize()
+		new_map_seed()
 		create_maze()
 
 func get_univisted_neighbours(cell: Vector2, univisited: Array) -> Array:
@@ -52,7 +57,7 @@ func create_maze():
 	var current_cell : Vector2 = Vector2.ZERO
 	unvisited.erase(current_cell)
 	
-	while  !unvisited.is_empty():
+	while !unvisited.is_empty():
 		#iterate backtrack algo
 		var neighbours: Array = get_univisted_neighbours(current_cell, unvisited)
 		if neighbours:
@@ -65,6 +70,8 @@ func create_maze():
 			await get_tree().create_timer(0.01).timeout
 		else:
 			current_cell = stack.pop_back()
+	
+	random_remove_walls()
 
 
 func remove_walls(a_cell: Vector2, b_cell: Vector2):
@@ -73,6 +80,17 @@ func remove_walls(a_cell: Vector2, b_cell: Vector2):
 	tilemap.set_cell(0, a_cell, 0, tilemap.get_cell_atlas_coords(0, a_cell) - a_to_b)
 	tilemap.set_cell(0, b_cell, 0, tilemap.get_cell_atlas_coords(0, b_cell) - b_to_a)
 
+func random_remove_walls():
+	#go through the tiles and remove tiles at random
+	for i in range(int(width * height * random_remove_factor)):
+		#pick random tile not on the edge
+		var cell: Vector2 = Vector2(randi_range(1, width - 1), randi_range(1, height - 1))
+		var next_dir :Vector2 = wall_directions.keys().pick_random()
+		#check if there's a wall between them
+		if atlas_to_int(tilemap.get_cell_atlas_coords(0, cell)) & wall_directions[next_dir]:
+			remove_walls(cell, (cell + next_dir))
+		await get_tree().create_timer(0.01).timeout
+
 func int_to_atlas(num: int) -> Vector2:
 	var atlas_coord: Vector2 = Vector2(num % tileset_collumns, num / tileset_rows)
 	return atlas_coord
@@ -80,3 +98,9 @@ func int_to_atlas(num: int) -> Vector2:
 func atlas_to_int(coord: Vector2) -> int:
 	var num = coord.x + (coord.y * tileset_rows)
 	return num
+	
+func new_map_seed():
+	randomize()
+	map_seed = randi()
+	seed(map_seed)
+	print("Seed: ", map_seed)
