@@ -14,7 +14,7 @@ var tile_size: int = 16
 var width: int = 18
 var height: int = 10
 var unvisited: Array
-var visited: Array
+var used_cells: Array
 
 #Tileset properties
 var tileset_collumns: int = 4
@@ -67,7 +67,7 @@ func create_maze():
 	for x in range(0, width, step_size):
 		for y in range(0, height, step_size):
 			unvisited.append(Vector2(x, y))
-			
+			used_cells.append(Vector2(x, y))
 			#print(atlas_to_int(tilemap.get_cell_atlas_coords(0, cell)) - wall_directions[Vector2.UP])
 	
 	var current_cell : Vector2 = Vector2.ZERO
@@ -87,7 +87,7 @@ func create_maze():
 		else:
 			current_cell = stack.pop_back()
 	
-	#random_remove_walls()
+	random_remove_walls()
 
 
 func remove_walls(a_cell: Vector2, b_cell: Vector2):
@@ -107,15 +107,19 @@ func remove_walls(a_cell: Vector2, b_cell: Vector2):
 				tilemap.set_cell(0, cur_cell, 0, int_to_atlas(S|N))
 			else:
 				tilemap.set_cell(0, cur_cell, 0, int_to_atlas(E|W))
+			if !used_cells.has(cur_cell):
+				used_cells.append(cur_cell)
 			
 func random_remove_walls():
+	#GOAL: to add loops the the maze
 	#go through the tiles and remove tiles at random
 	for i in range(int(width * height * random_remove_factor)):
 		#pick random tile not on the edge
-		var cell: Vector2 = Vector2(randi_range(1, width - 1), randi_range(1, height - 1))
+		#var cell: Vector2 = Vector2(randi_range(step_size , width - step_size), randi_range(step_size, height - step_size))
+		var cell: Vector2 = used_cells.pick_random()
 		var next_dir :Vector2 = wall_directions.keys().pick_random()
 		#check if there's a wall between them
-		if atlas_to_int(tilemap.get_cell_atlas_coords(0, cell)) & wall_directions[next_dir]:
+		if atlas_to_int(tilemap.get_cell_atlas_coords(0, cell)) & wall_directions[next_dir] && used_cells.has(cell + next_dir):
 			remove_walls(cell, (cell + next_dir))
 		await get_tree().create_timer(0.01).timeout
 
