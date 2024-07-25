@@ -11,8 +11,8 @@ var map_seed:int = 0
 var wall_directions: Dictionary
 var wall_directions_uniform: Dictionary = {Vector2.UP: N, Vector2.RIGHT: E, Vector2.DOWN: S, Vector2.LEFT: W}
 var tile_size: int = 16
-var width: int = 18
-var height: int = 10
+var width: int = 17
+var height: int = 9
 var unvisited: Array
 var used_cells: Array
 
