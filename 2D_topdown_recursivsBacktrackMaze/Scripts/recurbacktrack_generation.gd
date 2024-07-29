@@ -24,7 +24,7 @@ var tileset_rows:     int = 4
 var random_remove_factor:float = 0.2
 
 #Step property?
-var step_size: int = 2
+var step_size: int = 1
 
 @onready var tilemap:TileMap = $TileMap
 

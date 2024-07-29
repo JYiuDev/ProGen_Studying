@@ -89,3 +89,4 @@ func generate_rooms(count: int):
 		
 		if valid_space:
 			make_room(Rect2i(room_pos,room_size))
+	print("room count: ", room_count)

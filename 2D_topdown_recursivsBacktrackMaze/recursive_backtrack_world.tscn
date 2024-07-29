@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bq7117bbk0g6i"]
+[gd_scene load_steps=5 format=3 uid="uid://1mtx4bp23y3a"]
 
 [ext_resource type="Script" path="res://2D_topdown_recursivsBacktrackMaze/Scripts/recurbacktrack_generation.gd" id="1_8fpr6"]
 [ext_resource type="Texture2D" uid="uid://dnmlyxp8vecug" path="res://Assets/Tilemap/maze_tiles.png" id="2_xakis"]
