@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Procedural Generation Study"
-run/main_scene="res://2D_topdown_walkerDungeon/Script/RandomWalkTest.tscn"
+run/main_scene="res://2D_topdown_walkerDungeon/RandomWalkTest.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
