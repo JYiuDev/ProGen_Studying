@@ -5,9 +5,9 @@ var dummy_tile: Vector2 = Vector2(0, 3)
 var grid_tile: Vector2i = Vector2(9, 6)
 var room_list: Array[Rect2i]
 
-var max_room_tries: int = 10 #maximum amount of times to try and create a room when the previous did not fit
+var room_attempts: int = 10 #maximum amount of times to try and create a room when the previous did not fit
 
-@export var room_count: int = 20
+@export var room_count: int = 10
 @export var min_room_size: int = 5
 @export var max_room_size: int = 10
 @export var min_room_seperation: int = 1
@@ -66,18 +66,26 @@ func generate_rooms(count: int):
 	var room_pos:  Vector2i
 	
 	for i in count:
-		room_size = Vector2i(randi_range(min_room_size, max_room_size), randi_range(min_room_size, max_room_size))
-		#Randomize the position(top right) of the room according to roomsize, make sure full room can be contained within boundry
-		room_pos.x = randi_range(boundry.position.x + 1, boundry.position.x + boundry.size.x + 1 - room_size.x)
-		room_pos.y = randi_range(boundry.position.y + 1, boundry.position.y + boundry.size.y + 1 - room_size.y)
-		#var intersect: bool = false
-		if room_list.is_empty():
+		var valid_space: bool = false
+		var attempt_count: int = room_attempts
+		while !valid_space && (attempt_count > 0):
+			room_size = Vector2i(randi_range(min_room_size, max_room_size), randi_range(min_room_size, max_room_size))
+			#Randomize the position(top right) of the room according to roomsize, make sure full room can be contained within boundry
+			room_pos.x = randi_range(boundry.position.x + 1, boundry.position.x + boundry.size.x + 1 - room_size.x)
+			room_pos.y = randi_range(boundry.position.y + 1, boundry.position.y + boundry.size.y + 1 - room_size.y)
+			
+			if room_list.is_empty():
+				valid_space = true
+			else:
+				var overlap: = false
+				for room: Rect2i in room_list:
+					var check_area: Rect2i = Rect2i(room_pos,room_size).grow(min_room_seperation)
+					if check_area.intersects(room):
+						overlap = true
+				if !overlap:
+					valid_space = true
+					
+			attempt_count -= 1
+		
+		if valid_space:
 			make_room(Rect2i(room_pos,room_size))
-		else:
-			var overlap:bool = false
-			for room:Rect2i in room_list:
-				var check_area:Rect2i = Rect2i(room_pos,room_size).grow(min_room_seperation)
-				if check_area.intersects(room):
-					overlap = true
-			if !overlap:
-				make_room(Rect2i(room_pos,room_size))
